@@ -3,8 +3,8 @@
 # @Time   : 2019/8/2 0002 16:04 
 # @Autohor: Sam
 # @File   : Chapter05 - File Processing.py
-# 在txt文件头的作用：告诉 Python解释器 用指定的字符编码去读取文件内容。
-# 在 Pycharm 中，当我指定好了读取文件的字符编码，它会自动改变保存写入到硬盘的字符编码,
+# Python解释器下：在txt文件头的作用：告诉 Python解释器 用指定的字符编码去读取文件内容。
+# 在 Pycharm 下，当我指定好了读取文件的字符编码，它会自动改变保存写入到硬盘的字符编码。
 
 
 
@@ -21,7 +21,7 @@
 # print()
 #
 # # 因为会遗漏close()关闭文件，最好使用with
-# with open('a.txt', mode='r') as f:
+# with open('a.txt', mode='r', encoding='utf-8') as f:
 #     data = f.read()
 #     print(data)
 #
@@ -38,40 +38,42 @@
 #
 #
 # # 一行一行读文件内容使用readline
-# with open('a.txt', mode='r') as f:
+# with open('a.txt', mode='r',encoding='utf-8') as f:
 #     print(f.readline(), end='')
 #     print(f.readline(), end='')
 #     print(f.readline(), end='')
+#     print("*"*50)
+#     print(f.readline())
+#     print(f.readline())
+#     print(f.readline())
 #
 #
 #
 # # 全部读取文件内容,存入列表.
-# with open('a.txt', mode='r') as f:
+# with open('a.txt', mode='r',encoding='utf-8') as f:
 #     print(f.readlines())
 #
-#
-#
-# # 建议使用f，f是迭代对象
-# with open('a.txt', mode='r') as f:
+# 建议使用这种方式，f是迭代对象
+# with open('a.txt', mode='r',encoding='utf-8') as f:
 #     for line in f:
 #         print(line,end='')
 #
 #
 # # t 模式下的 w，文件存在时，清空文件内容。
 # # 当文件不存在时,就会创建空文档,
-# with open('a.txt', 'w') as f:
+# with open(r'a.txt', 'w',encoding='utf-8') as f:
 #     f.write('你好')
 #
 #
 #
-# # 只写模式常用的方法:
-# with open(r'a1.txt', mode='w') as f:
+# 只写模式常用的方法:
+# with open(r'a1.txt', mode='w',encoding='utf-8') as f:
 #     # 检查文件是否可写
 #     print(f.writable())
 #     # writelines指的是可以放一个列表或者元组，里面可以有多行内容，需要自己加换行符
 #     f.writelines(['111111\n', '222222\n', '333333\n'])
 #     # 下面这样代码与上面写的结果一样
-#     f.write('aaaaaa\nbbbbbbb\ncccccc\n')
+#     # f.write('aaaaaa\nbbbbbbb\ncccccc\n')
 #
 #
 # # 只写模式常用的方法:
@@ -139,21 +141,3 @@
 # import os #首先导入这个模块
 # os.rename('a.txt', 'b.txt') # 修改文件名,两个参数分别为源文件名和目标文名
 # os.remove( 'al.txt') # 删除a1.txt文件,这个参数指的是文件路径!
-
-
-
-
-# '-------------------------------------------------------------------------------------------------------'
-
-
-
-
-
-# 练习一:
-# 写一个程序在要保持文件内容的顺序不变的前提下，去除文件中重复的行。
-
-
-
-
-
-
