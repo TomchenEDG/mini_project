@@ -248,7 +248,140 @@ import os
 
 
 # os.path系列
-file_path = r'a/b/c/d.txt'
+# file_path = r'a/b/c/d.txt'
+# 当前目录下创建d.txt
+# print(os.path.abspath(file_path))
+
+
+# 分割路径 为 ('a/b/c', 'd.txt')
+# res = os.path.split(r'a/b/c/d.txt')
+# print(res)
+# print(res[-1])
+# print(res[0])
+
+
+# 判断是否是绝对路径
+# print(os.path.isabs(r'b/c/d.txt'))
+# print(os.path.isabs(r'/Users/albert/Desktop/函数/05模块对象.py'))
+
+
+# path1 = os.path.dirname(__file__)
+# print(path1) # 获取当前运行脚本的绝对路径
+
+# 返回path的目录。
+# BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+# DB_PATH = r'%s\db\db.txt'% BASE_DIR
+#
+# print(BASE_DIR)
+# print(DB_PATH)
+
+# 组合
+# print(os.path.join('C:\\','a', 'b', 'a.txt'))
+# print(os.path.join('C:\\', 'a', 'D:\\', 'b', 'a.txt'))
+# print(os.path.join('a', 'b', 'a.txt'))
+
+# 得到文件大小
+# res = os.path.getsize(r"F:\Program Files (x86)\PyCharm 2019.1.3\JetBrains_code\untitled\venv\Scripts\3.215. Kth Largest Element in an Array(heap).py")
+# print(res)
+
+# 正则表达式
+import re
+
+# print(re.findall('\w', 'ab 12\+- *&_')) # 匹配字母数字和下划线
+# print(re.findall('\W', 'ab 12\+- *&_')) # 匹配 非字母 非数字 非下划线
+
+# print(re.findall('\s', 'ab \r1\n2\t\+- *&_')) # 匹配任意空白字符
+# print(re.findall('\S', 'ab \r1\n2\t\+- *&_'))   # 匹配任意非空字符
+# print(re.findall('\d', 'ab \r1\n2\t\+- *&_'))   # 匹配任意数字
+# print(re.findall('\D', 'ab \r1\n2\t\+- *&_'))   # 匹配任意非数字
+# print (re.findall('\w_nb', 'albert james_nb123123curry_nb, harden_nb'))
+
+# print(re.findall('\Aalbert', 'abcalbertx is nb')) # 匹配不到
+# print(re.findall('\Aalbert', 'albert is nb')) # 匹配字符串开始
+# print(re.findall('^albert', 'albert is nalbertb')) #  匹配albert开头的字符串
+# print(re.findall('nba$', 'albertnba is super nba alertanba')) # 匹配nba结尾
+# print(re.findall('^albert$', 'albert')) # 以albert并以albert结尾
+# print(re.findall('a\nc', 'a\nc a\tc alc')) # 匹配一个换行符
+
+# 重复匹配：
+# 1.代表了换行符外的任意一个字符
+# print(re.findall('a.c', 'abc a1c aAc aaaaaaa\nc'))
+# print(re.findall('a.c', 'abc a1c aAc aaaaaca\nc', re.DOTALL))
+
+# 2.？:代表左边那一个字符重复0次或1次
+# print(re.findall('ab?', 'a ab abb abbb abbbb abbbb abab'))
+
+# 3.*:代表左边那一个字符出现0次或无穷次
+# print(re.findall('ab*', 'a ab abb abbb abbbb abbbb a1bbbbbbb'))
+
+# 4. + :代表左边那一个字符出现1次或无穷次
+# print(re.findall('ab+', 'a ab abb abbb abbbb abbbb a1bbbbbbb'))
+
+# 5.{m, n}:代表左边那一个字符出现m次到n次
+# print(re.findall('ab?', 'a ab abb abbb abbbb abbbb'))
+# print(re.findall('ab{0, 1}', 'a ab abb abbb abbbb abbbb'))
+# print(re.findall('ab*', 'a ab abb abbb abbbb abbbb ab1bbbbbbb'))
+# print(re.findall('ab{0,}', 'a ab abb abbb abbbb abbbb a1bbbbbbb'))
+# print(re.findall('ab+', 'a ab abb abbb abbbb abbbb a1bbbbbbb'))
+# print(re.findall('ab{1,}', 'a ab abb abbb abbbb abbbb a1bbbbbbb'))
+# print(re.findall('ab{1,3}', 'a ab abb abbb abbbb abbbb a1bbbbbbb aabb'))
+
+# 贪婪匹配: .* :匹配任意长度，任意的字符
+# print(re.findall('a.*c', 'ac a123c aaaac a *123)()c asdfasfdsadf'))
+
+# 非贪婪匹配： .*?
+# print(re.findall('a.*?c', 'a123c456c'))
+
+# 8.其他方法
+# print(re.findall('\Aalbert', '123albert say......'))
+# print(re.findall('^albert', 'albert say....'))
+# print(re.search('albert', '123albert say......').group()) # 整个字符串中查找
+# print(re.match('albert', '123albert say......')) # 从开头找
+
+
+# 哈希
+import hashlib
+# 1 字符串加密
+m = hashlib.md5() # md5是加密算法的一种
+# m = hashlib.sha256 ()
+# m = hashlib.sha512 ()
+m.update('hello'.encode('utf-8'))
+m.update('world'.encode('utf-8'))
+m.update('Albert'.encode('utf-8'))
+print('字符串md5值:', m.hexdigest()) # 9b904c5a3b6b865bf0ac9413887c375b
+
+# 2 文件nd5值效验
+# m = hashlib.md5()
+# with open(r'/Users/albert/Desktop/函数/05模块对象.py', 'rb') as f:
+#     for line in f:
+#         m.update(line)
+#     file_md5 = m.hexdigest ()
+# print('文件md5值: ', file_md5)
+
+# 3 密码加盐
+# import hashlib
+# pwd = 'albert1231'
+# m = hashlib.md5 ()
+# m.update ('天王盖地虎'.encode ('utf-8'))
+# m.update(pwd.encode ('utf-8'))
+# m.update ('宝塔炖蘑菇'.encode ('utf-8'))
+# print ('密码md5值: ', m.hexdigest())
 
 
 
+# import subprocess
+# # subprocess用于在程序中执行系统命令
+# cmd = input ('>>: ').strip() #Macos系统用ls测试, Windows系统用dir测试
+#
+# obj = subprocess.Popen(cmd,
+#                        shell=True,
+#                        stdout=subprocess.PIPE,
+#                        stderr=subprocess.PIPE
+#                        )
+# print(obj)
+#
+# res1 = obj.stdout.read()    # 输出正确结果
+# print('正确结果：', res1.decode('utf-8'))
+#
+# res2 =obj.stderr.read() # 输出错误结果
+# print ('错误结果: ', res2 .decode('utf-8'))
