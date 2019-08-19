@@ -78,3 +78,82 @@
 # personl.send('红魔系')
 # personl.close() # 关闭后后面不能传值
 # personl.send('谁说的')
+
+# yield 生成器
+# def test_yield():
+#     print('first')
+#     yield 1
+#     print('second')
+#     yield 2
+#     print('third')
+#     yield 3
+#
+# res = test_yield()
+# print(res)
+# print(res.__iter__() is res)
+# print(res.__next__())
+# print(res.__next__())
+# print(res.__next__())
+# print(res.__next__())
+
+# 自定义range
+# def show_my_range(start, stop, step=1):
+#     n = start
+#     while n < stop:
+#         yield n
+#         n += step
+#
+# for item in show_my_range(1, 10, 3):
+#     print(item)
+
+
+# yield 两个小项目
+# 1.
+# def eat(name):
+#     print('[1] %s is ready for eating'%name)
+#     while True:
+#         food = yield
+#         print('[2] %s starts to eat %s'%(name, food))
+#
+# person1 = eat("Albert")
+#
+# # person1.__next__()
+# # person1.__next__()
+#
+# person1.send(None)
+# person1.send('蒸羊')
+# person1.send('熊掌')
+# person1.close()
+# person1.send('烧鹅')
+# person1.send('烧鸡')
+
+
+# 2.
+# def eat(name):
+#     print('%s is ready for eating'%name)
+#     food_list = []
+#     while True:
+#         food = yield food_list
+#         print('%s starts to eat %s'%(name, food))
+#         food_list.append(food)
+#
+# name = 'Albert'
+#
+# person1 = eat(name)
+# person1.send(None)
+# res1 = person1.send('蒸羊')
+# print('%s has eaten %s'%(name, res1))
+#
+# res2 = person1.send('蒸鹿')
+# print('%s has eaten %s'%(name, res2))
+#
+# res3 = person1.send('蒸鹿')
+# print('%s has eaten %s'%(name, res3))
+#
+# res4 = person1.send('蒸鹿')
+# print('%s has eaten %s'%(name, res4))
+#
+# person1.close()
+# person1.send('烧鹅')
+
+
