@@ -10,60 +10,44 @@
 # 要求：登录成功一次，后续的函数都无需再输入用户名和密码；
 # 注意：从文件中读出字符串形式的字典，可以用以下方式把 字典字符串 转化成 字符串
 
-user_dic={
-    'egon':'123',
-    'alex':'alex3714',
-    'wupeiqi':'wu13',
-    'yuanhao':'123123'
-}
-
-# 将 user_dic写入db.txt文件
-with open('db.txt','w',encoding='utf-8') as f:
-    f.write(str(user_dic))
-
-with open('db.txt','r',encoding='utf-8') as f:
-    res = f.read()
-    # print(res,type(res)) # 字符串类型
-    user_dic = eval(res)
-    # print(user_dic,type(user_dic)) # 字典类型
-
-db_path = 'db.txt'
-login_dic = {
-    'user': None,
-    'status': False,
-}
-
-def auth(func):
-    def wrapper(*args,**kwargs):
-        if login_dic['user'] and login_dic['status']:
-            res = func(*args, **kwargs)
-            return res
-
-        name = input('your name: ')
-        password = input('your password: ')
-        with open(db_path, 'r', encoding='utf-8') as f:
-            user_dic = eval(f.read())
-
-        if name in user_dic and password == user_dic[name]:
-                print('login ok')
-                login_dic['user']=name
-                login_dic['status']=True
-                res=func(*args,**kwargs)
-                return res
-        else:
-            print('login err')
-    return wrapper
-
-@auth # auth(index)
-def index():
-    print('welecome to index')
-
-@auth
-def home(name):
-    print('welecome %s to home page' %name)
-
-index()
-home('egon')
+# db_path = 'a.txt'
+# login_status = {'status':False}
+#
+# def auth(auth_type='file'):
+#     def auth2(func):
+#         def wrapper(*args,**kwargs):
+#             if login_status['status']:
+#                 return func(*args, **kwargs)
+#             if auth_type == 'file':
+#                 with open(db_path, encoding='utf-8') as f:
+#                     user_dic = eval(f.read())
+#                 name = input('username:').strip()
+#                 password = input('password').strip()
+#                 if name in user_dic and password == user_dic[name]:
+#                     login_status['status'] = True
+#                     res = func(*args,**kwargs)
+#                     return res
+#                 else:
+#                     print('username or password error')
+#             elif auth_type == 'sql':
+#                 pass
+#             else:
+#                 pass
+#         return wrapper
+#
+#     return auth2
+#
+#
+# @auth
+# def index():
+#     print('index')
+#
+# @auth(auth_type='file')
+# def home(name):
+#     print('welecome %s to home page' %name)
+#
+# # index()
+# home('albert')
 
 
 
@@ -73,46 +57,50 @@ home('egon')
 # 2. 编写装饰器，为多个函数加上认证功能，要求登录成功一次，
 # 在超时时间内无需重复登录，超过了超时时间，则必须重新登录
 
-# import time,random
+# import time
+# import random
 #
-# user = {'user':None,'login_time':None,'timeout':0.000003,}
+# user_data = {
+#     'user':None,
+#     'login':False,
+#     'now_time': time.time()
+# }
 #
-# def timmer(func):
-#     def wrapper(*args,**kwargs):
-#         s1 = time.time()
-#         res = func(*args,**kwargs)
-#         s2 = time.time()
-#         print('%s' %(s2-s1))
-#         return res
-#     return wrapper
+# db_username = 'albert'
+# db_password = '123'
 #
 # def auth(func):
-#     def wrapper(*args,**kwargs):
-#         if user['user']:
-#             timeout = time.time()-user['login_time']
-#             if timeout < user['timeout']:
-#                 return func(*args,**kwargs)
-#         name = input('name>>: ').strip()
-#         password = input('password>>: ').strip()
-#         if name == 'egon' and password == '123':
-#             user['user'] = name
-#             user['login_time'] = time.time()
-#             res = func(*args,**kwargs)
-#             return res
+#     def wrapper(*args, **kwargs):
+#         passed_time = time.time() - user_data['now_time']
+#
+#         if user_data['user'] and passed_time < 3:
+#             return func(*args, **kwargs)
+#         else:
+#             while True:
+#                 username = input('input your username>>:').strip()
+#                 password = input('input your password>>:').strip()
+#                 if username == db_username and password == db_password:
+#                     print('login successfully')
+#                     user_data['user'] = username
+#                     user_data['login'] = True
+#                     user_data['now_time'] = time.time()
+#                     return func(*args, **kwargs)
+#                 else:
+#                     print('username or password is invalid!')
+#
 #     return wrapper
 #
 # @auth
 # def index():
-#     time.sleep(random.randrange(3))
-#     print('welcome to index')
+#     print('This is index page')
 #
 # @auth
 # def home(name):
-#     time.sleep(random.randrange(3))
-#     print('welcome %s to home ' %name)
+#     print('welcome %s to home page' %name)
 #
 # index()
-# home('egon')
+# time.sleep(random.randint(2, 4))
+# home('albert')
 
 
 
@@ -122,23 +110,27 @@ home('egon')
 # 则将函数执行时间写入到日志文件中，日志文件路径可以指定。
 # 注意：时间格式的获取
 
-# import time,os
+# import time
 #
-# def auth(logfile):
-#     def deco(func):
-#         if not os.path.exists(logfile):
-#             with open(logfile,'w',encoding = 'utf-8') as f:
-#                 pass
-#         def wrapper(*args,**kwargs):
-#             res = func(*args,**kwargs)
-#             with open(logfile,'a',encoding = 'utf-8') as f:
-#                 f.write('%s %s run'%(time.strftime('%Y-%m-%d %X'),func.__name__))
-#         return wrapper
-#     return deco
+# def auth(file):
+#     def wrapper(func):
+#         def inner(*args, **kwargs):
+#             with open(file, 'a', encoding = 'utf-8') as f:
+#                 f.write('[%s]:[%s]\n'%(func.__name__, time.strftime('%Y-%m-%d %X')))
+#                 return func(*args, **kwargs)
 #
-# @auth('suhao.txt')
+#         return inner
+#
+#     return wrapper
+#
+# @auth('db1.txt')
 # def index():
 #     print('this is my index')
 #
+# @add_log('db2.txt')
+# def home(name):
+#     print('Welcome %s to home page'% name)
+#
 # index()
+# home('albert')
 
