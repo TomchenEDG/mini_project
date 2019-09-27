@@ -247,5 +247,187 @@
 
 
 
+# 查看类型和内存地址
+# class DeepShareStudent:
+#     school = 'deepshare'
+#
+#     def __init__(self, name, age, gender):
+#         self.name = name
+#         self.age = age
+#         self.gender = gender
+#
+#     def learn(self):
+#         print('%s is learning'%self.name)
+#
+#     def choose(self, course):
+#         print('%s is choosing %s '% (self.name, course))
+#
+#     def eat(self):
+#         print('is eating')
+#
+#     def sleep(self):
+#         print('is sleeping')
+#
+# stu1 = DeepShareStudent('王小二', 18, 'male')
+# stu2 = DeepShareStudent('汪三小', 18, 'male')
+#
+# print(stu1)
+# print(type(stu1))
+# print(id(stu1))
+# 实验结果：stu1的类型是DeepShareStudent，stu1的类也是DeepShareStudent
 
 
+
+# 列表也是一个类
+# l1 = [1,2,3,4]
+# print(type(l1))
+# print(l1.append)
+
+
+
+# 实验，类的使用
+# l1 = [1,2,3,4]
+# list.append(l1, 5)
+# print(l1)
+# 实验结果：确实可以当作类来使用
+
+
+
+# 实验，类的使用
+# l1 = [1,2,3,4]
+# l2 = ['a', 'b', 'c']
+# l2.append('d')
+# print(l2)
+# print(l1)
+
+
+
+# 对比,跟上面的输出一样，写法不一样
+# l1 = [1,2,3,4]
+# l2 = ['a', 'b', 'c']
+# list.append(l2, 'd')
+# print(l2)
+# print(l1)
+# 实验结果：添加到l2的值，不会到l1
+
+
+
+# 查看
+# class Bar:
+#     n = 1111
+#     def __init__(self, x):
+#         self.x = x
+#
+# obj = Bar('abc')
+# print(Bar)
+# print(obj.__dict__)
+# print(obj.x)
+# print(obj.n)
+
+
+
+# 添加
+# class Bar:
+#     n = 1111
+#     def __init__(self, x):
+#         self.x = x
+#
+# obj = Bar('abc')
+#
+# print(Bar)
+# print(obj.__dict__)
+# print(obj.x)
+# print(obj.n)
+#
+# obj.abc = 'abc' # 添加函数
+# print(obj.abc)
+
+
+
+# 修改
+# class Bar:
+#     n = 1111
+#     def __init__(self, x):
+#         self.x = x
+#
+# obj = Bar('abc')
+#
+# print(Bar)
+# print(obj.__dict__)
+# print(obj.x)
+# print(obj.n)
+#
+# obj.abc = 'abc' # 添加函数
+# print(obj.abc)
+# obj.abc = '123' # 修改函数
+# print(obj.abc)
+
+
+
+# 删除
+# class Bar:
+#     n = 1111
+#     def __init__(self, x):
+#         self.x = x
+#
+# obj = Bar('abc')
+#
+# print(Bar)
+# print(obj.__dict__)
+# print(obj.x)
+# print(obj.n)
+#
+# obj.abc = 'abc' # 添加函数
+# print(obj.abc)
+# del obj.abc # 删除函数
+
+
+# 三个对象共享属性
+# class foo:
+#     count = 0
+#     def __init__(self):
+#         foo.count += 1
+#
+# obj1 = foo()
+# obj2 = foo()
+# obj3 = foo()
+# print(obj1.count)
+# 实验结果：这个写法可以记录调用次数
+
+
+
+# 小实验
+# class People:
+#     def __init__(self, name, aggressivity, life_value=100):
+#         self.name = name
+#         self.aggressivity = aggressivity
+#         self.life_value = life_value
+#
+#     def bite(self, enemy):
+#         enemy.life_value -= self.aggressivity
+#         print("""
+#         人[%s]咬了一口狗[%s]
+#         狗掉血[%s]
+#         狗还剩血量[%s]
+#         """%(self.name, enemy.name, self.aggressivity, enemy.life_value))
+#
+# class Dog:
+#     def __init__(self, name, dog_type, aggressivity, life_vlaue):
+#         self.name = name
+#         self.dog_type = dog_type
+#         self.aggressivity = aggressivity
+#         self.life_value = life_vlaue
+#
+#     def bite(self, enemy):
+#         enemy.life_value -=self.aggressivity
+#         print("""
+#         狗[%s]咬了一口人[%s]
+#         人掉血[%s]
+#         人还剩血量[%s]
+#         """%(self.name, enemy.name, self.aggressivity, enemy.life_value))
+#
+# P1 = People('张二炮', 60)
+# d1 = Dog('小黑', '藏獒', 200, 200)
+#
+# P1.bite(d1)
+# d1.bite(P1)
