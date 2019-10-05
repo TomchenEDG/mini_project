@@ -631,35 +631,219 @@
 # p.eat()
 
 
-# 多态2
-class Animal:
-    def eat(self):
-        print('eat')
-        pass
-    def drink(self):
-        pass
-    def run(self):
-        pass
-    def bark(self):
-        pass
-
-class Cat(Animal):
-    def bark(self):
-        print('喵喵叫')
-    pass
-
-class Dog(Animal):
-    def bark(self):
-        print('汪汪叫')
-    pass
-class Pig(Animal):
-    def bark(self):
-        print('哼哼叫')
-    pass
-c = Cat()
-d = Dog()
-p = Pig()
-c.bark()
-d.bark()
-p.bark()
+# 多态2 这是规范的代码
+# class Animal:
+#     def eat(self):
+#         print('eat')
+#         pass
+#     def drink(self):
+#         pass
+#     def run(self):
+#         pass
+#     def bark(self):
+#         pass
+#
+# class Cat(Animal):
+#     def bark(self):
+#         print('喵喵叫')
+#     pass
+#
+# class Dog(Animal):
+#     def bark(self):
+#         print('汪汪叫')
+#     pass
+# class Pig(Animal):
+#     def bark(self):
+#         print('哼哼叫')
+#     pass
+# c = Cat()
+# d = Dog()
+# p = Pig()
+# c.bark()
+# d.bark()
+# p.bark()
 # 结论，每个对象都自己的特别，那就在自己类修改。
+
+
+# 多态3
+# import abc
+# class Animal(metaclass=abc.ABCMeta):
+#     @abc.abstractmethod
+#     def eat(self):
+#         pass
+#     @abc.abstractmethod
+#     def drink(self):
+#         pass
+#     @abc.abstractmethod
+#     def run(self):
+#         pass
+#     @abc.abstractmethod
+#     def bark(self):
+#         pass
+#
+# class Cat(Animal):
+#     def eat(self):
+#         print('cat eat')
+#     def drink(self):
+#         print('cat drink')
+#     def run(self):
+#         print('cat run')
+#     def bark(self):
+#         print('喵喵喵')
+#
+# class Dog(Animal):
+#     def eat(self):
+#         print('dog eat')
+#     def drink(self):
+#         print('dog drink')
+#     def run(self):
+#         print('dog run')
+#     def bark(self):
+#         print('汪汪汪')
+#
+# class Pig(Animal):
+#     def eat(self):
+#         print('pig eat')
+#     def drink(self):
+#         print('pig drink')
+#     def run(self):
+#         print('pig run')
+#     def bark(self):
+#         print('哼哼哼')
+#
+# C = Cat()
+# D = Dog()
+# P = Pig()
+#
+# C.bark()
+# D.bark()
+# P.bark()
+# 这里实现了多态
+
+# python一切皆对象
+# s = 'Hello'
+# l = [1,2,3]
+# t = (4,5,6)
+# print(s.__len__())
+# print(l.__len__())
+# print(t.__len__())
+# 我们自己定义一个
+# def LEN(obj):
+#     return obj.__len__()
+# print(LEN(s))
+# print(LEN(l))
+# print(LEN(t))
+# print(len(s))
+# print(len(l))
+# print(len(t))
+# 结论：一样的结果
+
+
+# 鸭子类型,微软编写代码的其中一规范
+# class Foo:
+#     def f1(self):
+#         print('from foo.f1')
+#     def f2(self):
+#         print('from foo.f2')
+# class Bar:
+#     def f1(self):
+#         print('from bar.f1')
+#     def f2(self):
+#         print('from bar.f2')
+# obj1 = Foo()
+# obj2 = Bar()
+# obj1.f1()
+# obj1.f2()
+# obj2.f1()
+# obj2.f2()
+# 结论，解开了耦合，又统一了标准
+
+
+# 鸭子类型2
+# class Disk:
+#     def read(self):
+#         print('disk read')
+#     def write(self):
+#         print('disk write')
+# class Txt:
+#     def read(self):
+#         print('Txt read')
+#     def write(self):
+#         print('txt write')
+# class Process:
+#     def read(self):
+#         print('process read')
+#     def write(self):
+#         print('process write')
+# obj1 = Disk()
+# obj2 = Txt()
+# obj3 = Process()
+# obj1.read()
+# obj2.read()
+# obj3.read()
+# 解开了耦合，又能统一标准
+
+
+# 手动输入文件作为类的输入值 绑定方法
+# class People:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#     def tell(self):
+#         print('%s %s'%(self.name, self.age))
+# p = People('albert', 18)
+# p.tell()
+# 我们改进一下代码1
+# import setting
+# class People:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#     def tell(self):
+#         print('%s %s'%(self.name, self.age))
+# p = People(setting.NAME, setting.AGE)
+# p.tell()
+# 我们改进一下代码2
+# import setting
+# class People:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#     def tell(self):
+#         print('%s %s'%(self.name, self.age))
+#
+#     @classmethod
+#     def read_from_conf(cls):
+#         return People(setting.NAME, setting.AGE)
+#
+# p = People.read_from_conf()
+# p.tell()
+# 结论，这样写就不怕类改名字后，出错在哪里了！类的绑定方法
+
+
+# 非绑定方法：
+# import setting
+# import hashlib
+# import time
+#
+# class People:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#     def tell(self):
+#         print('%s %s'%(self.name, self.age))
+#
+#     @classmethod
+#     def read_from_conf(cls):
+#         return People(setting.NAME, setting.AGE)
+#     @staticmethod
+#     def create_id():
+#         m = hashlib.md5()
+#         m.update(str(time.clock()).encode('utf-8'))
+#         return m.hexdigest()
+#
+# p = People('albert', 18)
+# print(People.create_id())
+# print(People.create_id)
+# print(p.create_id)
+# 结论：@staticmethod是静态方法，全部变成普通方法
