@@ -309,15 +309,171 @@
 
 
 # 进程池
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
-import time, os, random
-print(os.cpu_count()) #打印CPU数目
+# from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+# import time, os, random
+#
+# print(os.cpu_count()) #打印CPU数目
+#
+# def task(x):
+#     print('%s is running'% os.getpid())
+#     time.sleep(random.randint(2, 5))
+#     return x ** 2
+#
+# if __name__ == '__main__':
+#     p = ProcessPoolExecutor(max_workers=5) # 不传参数默认开启的进程数是cpu的核数
+#     for i in range(20):
+#         p.submit(task, i) # 分配任务
+# 结论：设置好进程池数，然后分配任务
 
-def task(x):
-    print('%s is running'% os.getpid())
-    time.sleep(random.randint(2, 5))
-    return x ** 2
-if __name__ == '__main__':
-    p = ProcessPoolExecutor(max_workers=5) # 不传参数默认开启的进程数是cpu的核数
-    for i in range(20):
-        p.submit(task, i) # 分配任务
+
+# 线程池
+# from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+# import time, random
+#
+# def task(x):
+#     print('%s is running'% os.getpid())
+#     time.sleep(random.randint(2, 5))
+#     return x ** 2
+#
+# if __name__ == '__main__':
+#     p = ThreadPoolExecutor(50) # 默认开启的线程数是cpu核数的5倍
+#     for i in range(200):
+#         p.submit(task, i) # 分配任务
+# 结论：线程开销小，所以运行快
+
+
+# 异步
+# from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+# import time, random, os
+#
+# def task(x):
+#     print('%s is running'% os.getpid())
+#     time.sleep(random.randint(2, 5))
+#     return x ** 2
+#
+# if __name__ == '__main__':
+#     p = ThreadPoolExecutor(50) # 默认开启的线程数是cpu核数的5倍
+#     for i in range(200):
+#         p.submit(task, i) # 分配任务
+# 结论：运行代码后，没有拿结果，直接运行下一个代码，就是异步
+
+
+# 异步调用：老进程池
+# from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+# import time, random
+# def task(x):
+#     print('%s is running'%x)
+#     time.sleep(random.randint(2, 5))
+#     return x**2
+# if __name__ in '__main__':
+#     p = ThreadPoolExecutor(30)
+#     obj_list = []
+#     for i in range(100):
+#         obj = p.submit(task, i) # submit的结果是一个对象
+#         obj_list.append(obj)
+#     p.shutdown()    # 先关闭入口，再等待结束
+#     print(obj_list[0].result()) # 取第一对象并返回结果
+#     print(obj_list[1].result())
+#     print(obj_list[2].result())
+#     print(obj_list[3].result())
+#     print('主')
+# 结论：以前的老做法
+
+
+# 同步调用：以前的老进程池
+# from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+# import time, random
+# def task(x):
+#     print('%s is running'%x)
+#     time.sleep(random.randint(2, 5))
+#     return x ** 2
+# if __name__ == '__main__':
+#     p = ThreadPoolExecutor(30)
+#     for i in range(10):
+#         res = p.submit(task, i).result()
+#         print(res)
+#     print('主')
+# 结论：同步能够提交代码后需要等待获取返回值才能结束
+
+
+# 线程queue，队列的三种形式
+# 线程队列：先进先出
+# import queue
+# q = queue.Queue(3)
+# q.put(1)
+# q.put(2)
+# q.put(3)
+# # q.put(4) # 阻塞
+# print(q.get())
+# print(q.get())
+# print(q.get())
+
+
+# 堆栈：后进先出
+# import queue
+# q = queue.LifoQueue(3)
+# q.put('a')
+# q.put('b')
+# q.put('c')
+# print(q.get())
+# print(q.get())
+# print(q.get())
+
+
+# 优先队列:元组
+# import queue
+# q = queue.PriorityQueue(3)
+# q.put((10, 'user1'))
+# q.put((-3, 'user2'))
+# q.put((-1.1, 'user3'))
+#
+# print(q.get())
+# print(q.get())
+# print(q.get())
+# 结论：优先队列，数字越小优先级越高,元组可以放小数，但不能为0
+
+
+# 优先队列：列表
+# import queue
+# q = queue.PriorityQueue(4)
+# q.put([2, 'user1'])
+# q.put([-5, 'user2'])
+# q.put([0, 'user3'])
+# q.put([1.2, 'user4'])
+#
+# print(q.get())
+# print(q.get())
+# print(q.get())
+# print(q.get())
+# 结论：优先队列，列表不能放小数，但可以用0
+
+
+# 线程event
+# from threading import Event, current_thread, Thread
+# import time
+# event = Event()
+# def check():
+#     print('%s 正在检测服务是否正常...'% current_thread().name)
+#     time.sleep(5)
+#     event.set() # success由false改成了True
+# def connect():
+#     print('%s 等待连接...'%current_thread().name)
+#     """
+#     while True:
+#         if not success:
+#             time.sleep(1)
+#             continue
+#         else:
+#             break
+#     """
+#     event.wait() # 取代了上面注释掉的代码
+#     print('%s 开始连接...'% current_thread().name)
+# if __name__ == '__main__':
+#     t1 = Thread(target=connect)
+#     t2 = Thread(target=connect)
+#     t3 = Thread(target=connect)
+#     c1 = Thread(target=check)
+#     t1.start()
+#     t2.start()
+#     t3.start()
+#     c1.start()
